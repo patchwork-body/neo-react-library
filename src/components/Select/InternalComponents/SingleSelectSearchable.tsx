@@ -10,7 +10,7 @@ import type { SelectOptionProps } from "../utils/SelectTypes";
 import { OptionsWithEmptyMessageFallback } from "./OptionsWithEmptyMessageFallback";
 
 const logger = log.getLogger("single-select-searchable");
-logger.disableAll();
+logger.enableAll();
 
 export const SingleSelectSearchable = () => {
 	const {
@@ -29,7 +29,7 @@ export const SingleSelectSearchable = () => {
 	} = useContext(SelectContext);
 
 	const {
-		closeMenu,
+		// closeMenu, no longer needed, it fixes another bug. Fixing in separate PR.
 		getInputProps,
 		getMenuProps,
 		getToggleButtonProps,
@@ -48,6 +48,7 @@ export const SingleSelectSearchable = () => {
 
 	// clear the search when dropdown closes (when the user selects an item or clicks away)
 	useEffect(() => {
+		logger.debug("setInputValue or IsOpen changed");
 		if (isOpen === false) {
 			setInputValue("");
 		}
@@ -76,8 +77,17 @@ export const SingleSelectSearchable = () => {
 						{...restInputProps}
 						className="neo-input"
 						disabled={disabled}
+						onFocus={(e) => {
+							logger.debug("onFocus called");
+							// e.preventDefault();
+							// e.target.select();
+							// document.getElementById("asdf")?.select();
+							// e.target.setSelectionRange(0, 2);
+							logger.debug("after select()");
+						}}
 						placeholder={selectedItems.length ? undefined : placeholder}
 						onKeyDown={(e) => {
+							logger.debug("key pressed: ", e.key);
 							if (
 								e.key === Keys.ENTER &&
 								filteredOptions.length === 1 &&
@@ -85,7 +95,7 @@ export const SingleSelectSearchable = () => {
 							) {
 								e.preventDefault();
 								selectItem(filteredOptions[0]);
-								closeMenu();
+								// closeMenu();
 							} else if (e.key === Keys.BACKSPACE && inputValue.length === 0) {
 								reset();
 							}
@@ -94,10 +104,10 @@ export const SingleSelectSearchable = () => {
 						}}
 					/>
 
-					{selectedItems[0]?.children}
+					{/* <span id="asdf">{selectedItems[0]?.children}</span> */}
 
 					<input
-						className="neo-display-none"
+						// className="neo-display-none"
 						id={id}
 						readOnly
 						tabIndex={-1}

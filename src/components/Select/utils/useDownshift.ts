@@ -5,7 +5,7 @@ import { type Dispatch, type SetStateAction, useState } from "react";
 import type { SelectOptionProps } from "./SelectTypes";
 
 const logger = log.getLogger("use-downshfit");
-logger.disableAll();
+logger.enableAll();
 
 const createOptionValue = "neo-select-create-option";
 
@@ -29,6 +29,7 @@ const DownshiftWithComboboxProps = (
 		stateReducer: (_, actionAndChanges) => {
 			const { changes, type } = actionAndChanges;
 			const isOpen = changes.isOpen ? !(disabled || loading) : false;
+			logger.debug("useCombobox - stateReducer called");
 			logger.debug({ isOpen, type, changes });
 			switch (type) {
 				case useCombobox.stateChangeTypes.ToggleButtonClick:
@@ -105,6 +106,7 @@ const DownshiftWithComboboxMultipleSelectProps = (
 		stateReducer: (state, actionAndChanges) => {
 			const { changes, type } = actionAndChanges;
 			const isOpen = changes.isOpen ? !(disabled || loading) : false;
+			logger.debug("DownshiftWithComboboxMultipleSelectProps - stateReducer called");
 			logger.debug({ isOpen, type, changes });
 			const { selectedItem } = changes;
 			const selectedItemsValues = selectedItems.map((item) => item.value);
