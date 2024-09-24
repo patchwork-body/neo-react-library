@@ -55,6 +55,7 @@
 	},
 	"dependencies": {
 		"atomic-layout": "0.16.2",
+		"inclusive-dates": "0.1.10",
 		"loglevel": "1.9.2",
 		"react-click-away-listener": "2.2.3",
 		"react-fast-compare": "3.2.2",
